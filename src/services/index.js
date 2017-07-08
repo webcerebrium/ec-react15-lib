@@ -1,0 +1,30 @@
+import { Logger } from './Logger';
+import { setValue, getValue, getEvaluated, getReadableValue, getWritableValue } from './DocumentData';
+import { renderChildren, renderElement } from './TplRenderer';
+import { getStyling, getStylingProperties } from './TplStyling';
+
+export {
+  Logger,
+  setValue,
+  getValue,
+  getReadableValue,
+  getWritableValue,
+  getEvaluated,
+  getStyling,
+  getStylingProperties,
+  renderChildren,
+  renderElement
+};
+
+export default {
+  Logger,
+  setValue,
+  getValue,
+  getReadableValue,
+  getWritableValue,
+  getEvaluated,
+  getStyling,
+  getStylingProperties,
+  renderChildren,
+  renderElement
+};
