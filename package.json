@@ -8,7 +8,7 @@
     "clean": "rm -f dist/*.js || true",
     "test": "jest --env=jsdom --watchAll --color"
   },
-  "repository": "git@webcerebrium.com:cloud/ec-react15-lib",
+  "repository": "https://github.com/webcerebrium/ec-react15-lib",
   "keywords": [
     "react",
     "reactjs",
@@ -20,7 +20,7 @@
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
     }
   },
-  "author": "Web Cerebrium <webcerebrium@gmail.com> (http://webcerebrium.com/)",
+  "author": "Web Cerebrium <webcerebrium@gmail.com> (https://webcerebrium.com/)",
   "licence": "MIT",
   "devDependencies": {
     "babel-core": "*",
