@@ -34,6 +34,13 @@ const envApplication = (ecOptions, elem) => {
       // save preloaded into documents (queries.d)
       store.dispatch({ type: 'SAVE_DOCUMENTS_COLLECTION', payload: data });
     }
+    if (ecOptions.mount && ecOptions.template) {
+      // we don't have a config, and we are launching from what we are provided in the
+      const mount = [{ selector: ecOptions.mount, template: ecOptions.template }];
+      Logger.of('ec-react15.App').info('Mounting', mount);
+      onStartApplications(store, mount, () => { onApplicationReady(ecOptions, store.dispatch); });
+      return;
+    }
 
     const configDocId = (ecOptions.configDoc) ? ecOptions.configDoc : '--Config';
     const found = (data && data.rows) ? data.rows.find(r => r.doc && r.doc._id === configDocId) : false;
