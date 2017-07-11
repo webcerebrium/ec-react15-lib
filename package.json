@@ -21,7 +21,7 @@
     }
   },
   "author": "Web Cerebrium <webcerebrium@gmail.com> (https://webcerebrium.com/)",
-  "licence": "MIT",
+  "licence": "Apache",
   "devDependencies": {
     "babel-core": "*",
     "babel-eslint": "^7.2.3",
