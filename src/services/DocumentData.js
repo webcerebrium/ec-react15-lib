@@ -25,12 +25,12 @@ export const setValue = (target, value, context = {}) => {
   /* eslint-disable no-undef */
   if (target.indexOf('ls:') === 0) {
     const f = target.substring(3).trim();
-    localStorage.setItem(f, value);
+    localStorage.setItem(f, typeof value === 'object' ? JSON.stringify(value) : value);
     Logger.of('DocumentData.setValue').info('localStorage value was set', f, '=', value,
       're-reading', localStorage.getItem(f));
   } else if (target.indexOf('ss:') === 0) {
     const f = target.substring(3).trim();
-    sessionStorage.setItem(f, value);
+    sessionStorage.setItem(f, typeof value === 'object' ? JSON.stringify(value) : value);
     Logger.of('DocumentData.setValue').info('sessionStorage value was set', f, '=', value,
       're-reading', sessionStorage.getItem(f));
   } else if (target.indexOf('g:') === 0) {
@@ -57,6 +57,13 @@ export const setValue = (target, value, context = {}) => {
   /* eslint-enable no-undef */
 };
 
+const getPersistentValue = (val) => {
+  if (!val) return false;
+  if (val.substring(0, 1) === '{' || val.substring(0, 1) === '[') return JSON.parse(val);
+  if (val === 'null' || val === 'undefined') return '';
+  return val;
+};
+
 export const getWritableValue = (dataSource, context = {}, defaultValue = '') => {
   /* eslint-disable no-undef */
   // LS: - data from the localStorage
@@ -69,7 +76,7 @@ export const getWritableValue = (dataSource, context = {}, defaultValue = '') =>
     }
     const value = localStorage.getItem(f);
     Logger.of('DocumentData.getValue.localStorage').info('LocalStorage: reading', f, 'value=', value);
-    return value;
+    return getPersistentValue(value);
   }
   // SS: - data from the sessionStorage
   if (dataSource.indexOf('ss:') === 0) {
@@ -81,7 +88,7 @@ export const getWritableValue = (dataSource, context = {}, defaultValue = '') =>
     }
     const value = sessionStorage.getItem(f);
     Logger.of('DocumentData.getValue.sessionStorage').info('SessionStorage: reading', f, 'value=', value);
-    return value;
+    return getPersistentValue(value);
   }
   if (dataSource.indexOf('g:') === 0) {
     if (typeof context.globals !== 'undefined') {

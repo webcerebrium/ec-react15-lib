@@ -18,11 +18,12 @@ export const triggerNavigation = (props, statements, context) => {
 };
 
 export const triggerSet = (props, statements, context) => {
-  Logger.of('DocumentAction.triggerSet').warn('statements=', statements, 'context=', context);
+  Logger.of('DocumentAction.triggerSet').info('statements=', statements, 'context=', context);
   statements.forEach((rule) => {
     const current = getValue(Object.assign({}, props, rule), 'value', context);
-    Logger.of('DocumentAction.triggerSet').warn('current=', current);
-    setValue(rule.target, current, context);
+    const target = getValue(rule, 'target', context);
+    Logger.of('DocumentAction.triggerSet').info('current=', current, 'target=', target);
+    setValue(target, current, context);
   });
 };
 
@@ -57,6 +58,7 @@ export const triggerSend = (props, statements, context) => {
       }
       if (rule.errorTarget) { setValue(rule.errorTarget, '', context); }
       if (rule.loadingTarget) { setValue(rule.loadingTarget, 'in_progress', context); }
+      // const ecO = context.globals.ecOptions;
       const actionsFunc = (data) => {
         const err = getErrorString(data);
         if (rule.loadingTarget) { setValue(rule.loadingTarget, err ? 'error' : 'ready', context); }
@@ -66,12 +68,20 @@ export const triggerSend = (props, statements, context) => {
           reject(data);
         } else {
           if (rule.set) {
-            Logger.of('DocumentAction.triggerSend.Rule.Set').warn('context=', context, 'data=', data);
+            Logger.of('DocumentAction.triggerSend.Rule.Set').info('context=', context, 'data=', data);
             triggerSet(props, rule.set, { ...context, data });
           }
           Logger.of('DocumentAction.triggerSend').info('submission success');
-          if (rule.go) { triggerNavigation(props, rule.go, context); }
+          /* // todo: onResponseReceived handler
+          if (ecO.cloudunit && ecO.cloudunit.onResponseReceived) {
+            // check conditions of onResponseReceived
+            // if they match, call triggerAction
+          } else { */
+          if (rule.go) {
+            triggerNavigation(props, rule.go, context);
+          }
           resolve(data);
+          /* } */
         }
       };
       if (method === 'GET') {

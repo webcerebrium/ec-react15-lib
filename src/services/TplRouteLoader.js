@@ -31,10 +31,11 @@ const onDataReady = (route, context, callback) => {
 };
 
 export const onEnterRoute = (store) => {
-  const { authStorage, routes, dispatch } = store;
+  const { authStorage, userStorage, routes, dispatch } = store;
   return (nextState, replace, callback) => {
     window.AUTH_TOKEN_STORAGE = authStorage; // eslint-disable-line
-    Logger.of('TplRouteLoader.onEnterRoute').info('authStorage=', authStorage);
+    window.AUTH_USER_STORAGE = userStorage;
+    Logger.of('TplRouteLoader.onEnterRoute').info('authStorage=', authStorage, 'userStorage=', userStorage);
 
     const pathname = nextState.location.pathname;
     // look through the routes table to match acceptable routes for current path.
