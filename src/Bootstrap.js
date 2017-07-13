@@ -23,21 +23,21 @@ const envApplication = (ecOptions, elem) => {
     Logger.of('ec-react15.App').info('Documents preloaded', data);
     const store = getStore(ecOptions);
     store.dispatch({ type: 'SET_DATA', payload: ['ecOptions', ecOptions] });
+    Logger.of('ec-react15.App').warn('ecOptions', ecOptions);
     const docPreload = document.getElementById('preloadedDocuments'); // eslint-disable-line
     if (docPreload) {
       const preloadedJson = JSON.parse(docPreload.innerText);
       store.dispatch({ type: 'SAVE_PRELOADED', payload: preloadedJson });
       Object.values(preloadedJson).forEach((doc) => { data.rows.push(doc); });
-      Logger.of('ec-react15.App').info('preloadedJson=', preloadedJson, 'data.rows=', data.rows);
-      store.dispatch({ type: 'SAVE_DOCUMENTS_COLLECTION', payload: data });
     } else if (data) {
       // save preloaded into documents (queries.d)
       store.dispatch({ type: 'SAVE_DOCUMENTS_COLLECTION', payload: data });
     }
+    Logger.of('ec-react15.App').info('mount=', ecOptions.mount, 'template=', ecOptions.template);
     if (ecOptions.mount && ecOptions.template) {
       // we don't have a config, and we are launching from what we are provided in the
       const mount = [{ selector: ecOptions.mount, template: ecOptions.template }];
-      Logger.of('ec-react15.App').info('Mounting', mount);
+      Logger.of('ec-react15.App').warn('mounting', mount);
       onStartApplications(store, mount, () => { onApplicationReady(ecOptions, store.dispatch); });
       return;
     }
