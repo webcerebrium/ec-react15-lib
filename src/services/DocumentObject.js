@@ -1,5 +1,16 @@
 // import React from 'react';
-// import { Logger } from './Logger';
+import { Logger } from './Logger';
+
+const getObjectField = (obj, field) => {
+  const myRegexp = /^(.*)\[(.*)\]$/g;
+  const match = myRegexp.exec(field);
+  if (match) {
+    const f = match[1];
+    const index = match[2];
+    return obj[f][index];
+  }
+  return obj[field];
+};
 
 export const objectPathExists = (object, path) => {
   if (!object) return false;
@@ -8,20 +19,21 @@ export const objectPathExists = (object, path) => {
   if (dotIndex !== -1) {
     const subObjectName = dotIndex === -1 ? path : path.substring(0, dotIndex);
     const subPath = dotIndex === -1 ? '' : path.substring(dotIndex + 1);
-    return objectPathExists(object[subObjectName], subPath);
+    return objectPathExists(getObjectField(object, subObjectName), subPath);
   }
-  return typeof object[path] !== 'undefined';
+  return typeof getObjectField(object, path) !== 'undefined';
 };
 
 export const getObjectPathValue = (object, path) => {
+  // Logger.of('DocumentObject.getObjectPathValue').warn('object=', object, 'path=', path);
   if (!path) return object;
   const dotIndex = path.indexOf('.');
   if (dotIndex !== -1) {
     const subObjectName = dotIndex === -1 ? path : path.substring(0, dotIndex);
     const subPath = dotIndex === -1 ? '' : path.substring(dotIndex + 1);
-    return getObjectPathValue(object[subObjectName], subPath);
+    return getObjectPathValue(getObjectField(object, subObjectName), subPath);
   }
-  return object[path];
+  return getObjectField(object, path);
 };
 
 export const deepFind = (obj, path) => {
