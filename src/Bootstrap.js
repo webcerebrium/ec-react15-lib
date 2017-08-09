@@ -29,7 +29,8 @@ const envApplication = (ecOptions, elem) => {
       const preloadedJson = JSON.parse(docPreload.innerText);
       store.dispatch({ type: 'SAVE_PRELOADED', payload: preloadedJson });
       Object.values(preloadedJson).forEach((doc) => { data.rows.push(doc); });
-    } else if (data) {
+    }
+    if (data) {
       // save preloaded into documents (queries.d)
       store.dispatch({ type: 'SAVE_DOCUMENTS_COLLECTION', payload: data });
     }

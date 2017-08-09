@@ -114,7 +114,8 @@ export const getWritableValue = (dataSource, context = {}, defaultValue = '') =>
       }
       return context[streamName][f];
     }
-    Logger.of('DocumentData.getValue.globals').warn('invalid stream', streamName, 'context=', context);
+    Logger.of('DocumentData.getValue.globals').warn('invalid stream. please check semicolon presense',
+        streamName, 'context=', context);
     return defaultValue;
   }
   /* eslint-enable no-undef */
