@@ -1,3 +1,4 @@
+
 export const validatePosition = () => {
   const allowed = ['flex', 'alignSelf', 'flexGrow', 'flexShrink', 'flexBasis', 'order'];
   return allowed;
