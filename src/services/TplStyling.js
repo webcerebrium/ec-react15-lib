@@ -1,10 +1,12 @@
 import STYLING from './../editable/html/styling';
 import POSITIONS from './../editable/html/positions';
+import { getStyleFromConditions } from './DocumentCondition';
 import { Logger } from './Logger';
 
 // does the same as function above, the only difference is that
 // it just returns the list of fields that are used for that style patterns
 export const getStylingProperties = ({ styling, props, context }) => {
+  Logger.of('getStylingProperties').info('styling =', styling, 'props =', props, 'context =', context);
   if (!styling || !styling.length) return [];
   const libs = STYLING;
   if (context.ecOptions) {
@@ -39,6 +41,7 @@ export const checkProperties = ({ props, context, styling, mandatory, optional }
     allowed.push('display');
     allowed.push('class');
     allowed.push('className');
+    allowed.push('if');
     getStylingProperties({ styling, props, context }).forEach((p) => { allowed.push(p); });
   }
 
@@ -53,14 +56,19 @@ export const checkProperties = ({ props, context, styling, mandatory, optional }
     });
   }
   //
+  //
+  //
+  const conditionProperties = getStyleFromConditions(props, context);
+  const propsFields = { ...props, ...conditionProperties };
+  //
   // collecting list of what is not allowed
   //
   const notAllowed = [];
-  Object.keys(props).forEach((p) => {
+  Object.keys(propsFields).forEach((p) => {
     const field = p.substring(0, 1) === '@' ? p.substring(1) : p;
     if (allowed.indexOf(field) === -1) notAllowed.push(field);
   });
-  Logger.of('TplValidation.checkProperties').info('props=', props,
+  Logger.of('TplValidation.checkProperties').info('props=', props, 'conditionProperties=', conditionProperties,
     'notAllowed=', notAllowed, 'missing=', missing, 'allowed= ', allowed);
   if (missing.length) {
     Logger.of('TplValidation.checkProperties').warn(props.type, ' properties Missing=', missing, props);
@@ -96,7 +104,7 @@ export const getStyling = ({ props, context, pos, styling, mandatory, optional }
       Logger.of('TplElement.getStylingOf').warn('position type', pos, ' is not configured', props);
     }
   }
-
+  Logger.of('getStyling').info('styling =', styling);
   if (!checkProperties({ props, context, styling, mandatory, optional })) {
     return { styles: false, classes: false };
   }
@@ -142,7 +150,8 @@ export const getStyling = ({ props, context, pos, styling, mandatory, optional }
     const classesFromPos = positions[pos].getPositionClasses(props);
     classesFromPos.forEach((cl) => { classes.push(cl); });
   }
-  return { styles, classes };
+  const stylesData = props.if ? { ...styles, ...getStyleFromConditions(props, context) } : styles;
+  return { styles: stylesData, classes };
 };
 
 

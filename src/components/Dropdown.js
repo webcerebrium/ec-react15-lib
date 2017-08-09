@@ -10,7 +10,7 @@ class Dropdown extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.value !== prevProps.value) {
-      Debounced.start(`update-of-${this.props.id}`, () => (this.input.value = this.props.value), 300);
+      Debounced.start(`update-of-${this.props.id}`, () => { this.input.value = this.props.value; }, 300);
     }
   }
   render() {
