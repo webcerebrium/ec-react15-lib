@@ -1,9 +1,5 @@
 // import React from 'react';
-<<<<<<< HEAD
 //import { Logger } from './Logger';
-=======
-// import { Logger } from './Logger';
->>>>>>> 938976b9843ac064e3481cc2a7f8fed922c3186d
 
 const getObjectField = (obj, field) => {
   const myRegexp = /^(.*)\[(.*)\]$/g;
