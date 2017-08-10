@@ -1,7 +1,7 @@
 import { Logger } from './Logger';
 import { deepFind, deepSet, objectPathExists, getObjectPathValue } from './DocumentObject';
 
-const getCompositeValue = (value, props, context) => {
+export const getCompositeValue = (value, props, context) => {
   // Logger.of('getCompositeValue').info('dataSource=', dataSource);
   const nextParamStart = value.indexOf('{{');
   const nextParamEnd = value.indexOf('}}');
