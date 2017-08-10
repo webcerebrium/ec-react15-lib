@@ -58,7 +58,7 @@ export const setValue = (target, value, context = {}) => {
 };
 
 const getPersistentValue = (val) => {
-  if (!val) return false;
+  if (!val) return '';
   if (val.substring(0, 1) === '{' || val.substring(0, 1) === '[') return JSON.parse(val);
   if (val === 'null' || val === 'undefined') return '';
   return val;

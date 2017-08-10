@@ -12,7 +12,7 @@ export const InputText = ({ section, index, props, context, pos }) => {
   });
   if (styles === false) return false;
   //
-  const value = getWritableValue(props.target, context);
+  const value = getWritableValue(props.target, context, '');
   const onChangeValue = (val) => {
     setValue(props.target, val, context);
     if (typeof context.onTriggerComplete === 'function') { context.onTriggerComplete(); }
