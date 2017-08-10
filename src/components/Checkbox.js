@@ -1,54 +1,46 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
-/* eslint-disable jsx-a11y/label-has-for */
-class Checkbox extends Component {
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-  }
-  componentDidMount() {
-    this.input.checked = this.props.value;
-    /*this.addClassName(this.input.checked ? 'fa-check' : '');*/
-  }
-  addClassName(className) {
-    let resultClassName = 'fa ';
-    resultClassName = `${resultClassName} ${className}`;
-    this.input.className = resultClassName;
-  }
-  componentDidUpdate(prevProps) {
-    if (this.props.value !== prevProps.value) {
-      this.input.checked = this.props.value;
-    }
-  }
-  onChange(e) {
-    this.props.onChange(e.target.checked);
-    /*this.addClassName(e.target.checked ? 'fa-check' : '');*/
-  }
-  render() {
-    const styleTop = { ...{ display: 'flex', alignItems: 'flex-start' }, ...this.props.style };
-    const styleLabel = { flex: 1 };
-    const chkAtLeft = (!this.props.side || this.props.side === 'left');
-    const styleCheck = { width: 30, textAlign: chkAtLeft ? 'left' : 'right' };
-    return (
-      <label className='checkbox' style={styleTop}>
-        {!chkAtLeft && this.props.label ? (<div style={styleLabel}>{this.props.label}</div>) : ''}
-        <div style={styleCheck}>
-          <input
-            type='checkbox'
-            name={this.props.name}
-            ref={(input) => { this.input = input; }}
-            onChange={this.onChange}
-          />
+const Checkbox = (props) => {
+  const isChecked = props.value === 'true';
+  const onChange = () => {
+    props.onChange(!isChecked);
+  };
+  const chkAtLeft = (!props.side || props.side === 'left');
+  const styles = {
+    forTop: { display: 'flex', alignItems: 'flex-start', cursor: 'pointer' },
+    forLabel: { flex: 1, marginLeft: '15px', color: '#000' },
+    forCheck: { textAlign: chkAtLeft ? 'left' : 'right', margin: '0px auto', marginTop: '7px' },
+    forButton: { stroke: '#666', strokeWidth: 1, strokeOpacity: '0.5' }
+  };
+  return (
+    <div className='checkboxButton' style={styles.forTop}>
+      {!chkAtLeft && props.label ? (<div style={styles.forLabel}>{props.label}</div>) : ''}
+      <div
+        role='checkbox'
+        aria-checked='false'
+        tabIndex={0}
+        style={styles.forCheck}
+        onMouseDown={onChange}
+      >
+        <svg width='20' height='20'>
+          <rect x='0' y='0' width='20' height='20' fill='transparent' style={styles.forButton} />
+          {isChecked && (<polygon fill='#666' points='7.6,11.6 4.4,8.4 2,10.8 7.6,16.4 18,6 15.6,3.6'></polygon>)}
+        </svg>
+      </div>
+      {chkAtLeft && props.label ? (
+        <div
+          role='checkbox'
+          aria-checked='false'
+          tabIndex={0}
+          onMouseDown={onChange}
+          style={styles.forLabel}
+        >
+          {props.label}
         </div>
-        {chkAtLeft && this.props.label ? (<div style={styleLabel}>{this.props.label}</div>) : ''}
-      </label>
-    );
-  }
-}
-
-Checkbox.propTypes = {
-  onChange: PropTypes.func.isRequired
+      ) : ''
+      }
+    </div>
+  );
 };
 
 export default Checkbox;
