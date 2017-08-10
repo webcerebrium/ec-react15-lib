@@ -15,7 +15,7 @@ export const Divider = ({ section, index, props, context, pos }) => {
     background: props.color ? props.color : '#888'
   };
   return (
-    <div key={index} rel='Divider' className={classes.join(' ')} style={styles}>
+    <div key={index} className={classes.join(' ')} style={styles}>
       <div style={innerStyle}></div>
     </div>
   );
