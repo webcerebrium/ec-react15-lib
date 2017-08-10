@@ -3,9 +3,9 @@ import { Checkbox } from './../../../components';
 //import { triggerAction } from './../../../services/DocumentAction';
 import { Logger, setValue, getValue, getWritableValue, getStyling } from './../../../services';
 
-export const InputCheck = ({ section, index, props, context, pos }) => {
+export const InputCheck = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.InputCheck').info('section', section, 'index', index, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['target'], optional: ['value'], styling: ['Block', 'Text', 'Visibility']
   });

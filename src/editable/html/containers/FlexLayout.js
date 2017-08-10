@@ -2,9 +2,9 @@ import React from 'react';
 import { Logger } from './../../../services/Logger';
 import { renderChildren, getStyling } from './../../../services';
 
-export const FlexLayout = ({ section, index, props, context, pos }) => {
+export const FlexLayout = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.FlexLayout').info('section', section, 'index', index, 'props', props, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['container'], optional: ['repeatable'], styling: ['Block', 'FlexParent', 'Visibility']
   });

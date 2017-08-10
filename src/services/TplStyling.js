@@ -85,7 +85,7 @@ export const checkProperties = ({ props, context, styling, mandatory, optional }
 // example of usage in final application
 // const { styles, classes } = getStylingOf(['block', 'text', 'visibility'], props, context);
 // const { styles, classes } = getStylingOf(['inline', 'text', 'visibility'], props, context);
-export const getStyling = ({ props, context, pos, styling, mandatory, optional }) => {
+export const getStyling = ({ props, context, pos, childIndex, styling, mandatory, optional }) => {
   const styles = {};
   const classes = [];
   const positions = POSITIONS;
@@ -150,6 +150,7 @@ export const getStyling = ({ props, context, pos, styling, mandatory, optional }
     const classesFromPos = positions[pos].getPositionClasses(props);
     classesFromPos.forEach((cl) => { classes.push(cl); });
   }
+  if (typeof childIndex !== 'undefined') { classes.push(`index-${childIndex}`); }
   const stylesData = props.if ? { ...styles, ...getStyleFromConditions(props, context) } : styles;
   return { styles: stylesData, classes };
 };

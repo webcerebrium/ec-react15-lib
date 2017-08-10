@@ -3,10 +3,11 @@ import { Logger } from './../../../services/Logger';
 import { renderChildren, getStyling } from './../../../services';
 import './Container.css';
 
-export const Container = ({ section, index, props, context, pos }) => {
+export const Container = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Container').info('section', section, 'index', index, 'props', props, 'pos', pos);
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
-    props, context, pos, optional: ['container', 'repeatable', 'position'], styling: ['Block', 'Visibility']
+    ...sp, optional: ['container', 'repeatable', 'position'], styling: ['Block', 'Visibility']
   });
   if (styles === false) return false;
   //

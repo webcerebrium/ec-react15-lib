@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logger, renderChildren, getStyling } from './../../../services';
 
-export const StripeLayout = ({ section, index, props, context, pos }) => {
+export const StripeLayout = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.StripeLayout').info('section', section, 'index', index, 'props', props, 'pos', pos);
   const arrTopSections = ['document', 'header', 'footer'];
   if (arrTopSections.indexOf(section) === -1) {
@@ -10,8 +10,9 @@ export const StripeLayout = ({ section, index, props, context, pos }) => {
       .warn('Cannot render stripe Layout outside of top sections. Only header, footer and document are allowed');
     return false;
   }
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
-    props, context, pos, mandatory: ['container'], optional: ['repeatable'], styling: ['Block', 'Visibility']
+    ...sp, mandatory: ['container'], optional: ['repeatable'], styling: ['Block', 'Visibility']
   });
   if (styles === false) return false;
   classes.push('container');

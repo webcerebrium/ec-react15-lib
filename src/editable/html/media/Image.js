@@ -1,9 +1,9 @@
 import React from 'react';
 import { Logger, getValue, getStyling } from './../../../services';
 
-export const Image = ({ section, index, props, context, pos }) => {
+export const Image = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Image').info('section', section, 'index', index, 'props', props, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['src'], optional: ['title', 'sizes', 'srcSet'], styling: ['Inline', 'Visibility']
   });

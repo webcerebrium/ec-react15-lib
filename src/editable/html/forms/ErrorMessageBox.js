@@ -1,9 +1,9 @@
 import React from 'react';
 import { Logger, getValue, getStyling } from './../../../services';
 
-export const ErrorMessageBox = ({ section, index, props, context, pos }) => {
+export const ErrorMessageBox = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.ErrorMessageBox').info('section', section, 'index', index, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp, optional: ['value', 'alertType'], styling: ['Block', 'Visibility']
   });

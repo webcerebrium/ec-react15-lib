@@ -1,11 +1,12 @@
 import React from 'react';
 import { Logger, renderChildren, getStyling } from './../../../services';
 
-export const FixedLayout = ({ section, index, props, context, pos }) => {
+export const FixedLayout = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.FixedLayout').info('section', section, 'index', index, 'props', props, 'pos', pos);
   const styling = ['Block', 'Fixed', 'Visibility'];
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
-    props, context, pos, mandatory: ['container'], optional: ['repeatable', 'zIndex'], styling
+    ...sp, mandatory: ['container'], optional: ['repeatable', 'zIndex'], styling
   });
   if (styles === false) return false;
   //

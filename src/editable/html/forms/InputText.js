@@ -3,9 +3,9 @@ import { TextArea, TextInput } from './../../../components';
 // import { triggerAction } from './../../../services/DocumentAction';
 import { Logger, setValue, getWritableValue, getStyling } from './../../../services';
 
-export const InputText = ({ section, index, props, context, pos }) => {
+export const InputText = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.InputText').info('section', section, 'index', index, 'props', props, 'pos=', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const optional = ['value', 'placeholder', 'width', 'rows', 'maxLength', 'name'];
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['target'], optional, styling: ['Block', 'Text', 'Visibility']

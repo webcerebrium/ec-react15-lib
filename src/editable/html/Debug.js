@@ -1,10 +1,11 @@
 import React from 'react';
 import { Logger, getEvaluated, getStyling } from './../../services';
 
-export const Debug = ({ section, index, props, context, pos }) => {
+export const Debug = ({ section, index, props, context, pos, childIndex }) => {
   if (!props) return false;
   const tplProps = getEvaluated(props, context);
-  const { styles, classes } = getStyling({ props, context, pos, optional: ['*'], styling: ['Block', 'Visibility'] });
+  const sp = { props, context, pos, childIndex };
+  const { styles, classes } = getStyling({ ...sp, optional: ['*'], styling: ['Block', 'Visibility'] });
   if (styles === false) return false;
   //
   if (typeof jest === 'undefined' && props.console) {

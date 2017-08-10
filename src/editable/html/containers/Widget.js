@@ -3,9 +3,9 @@ import { Logger } from './../../../services/Logger';
 import { deepSet } from './../../../services/DocumentObject';
 import { getReadableValue, renderChildren, getStyling } from './../../../services';
 
-export const Widget = ({ section, index, props, context, pos }) => {
+export const Widget = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Widget').info('section', section, 'index', index, 'props', props, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const optional = ['mappedData', 'mappedDocuments', 'repeatable'];
   const { styles, classes } = getStyling({
     ...sp, styling: ['Block', 'Visibility'], mandatory: ['document', '_id'], optional
@@ -47,13 +47,13 @@ export const Widget = ({ section, index, props, context, pos }) => {
       }
     });
   }
-  const rowset = context.rowset ? `${context.rowset} ${props._id}` : props._id; // only widget and repeatable can map
   const p = { ...props };
   if (widgetDoc['@repeatable']) p['@repeatable'] = widgetDoc['@repeatable'];
   else if (widgetDoc.repeatable) p.repeatable = widgetDoc.repeatable;
+  const template = widgetDoc._id;
   return (
-    <div key={index} rel={rowset} className={classes.join(' ')} style={styles}>
-      {renderChildren({ items: widgetDoc.container, props: p, context: { ...context, row, rowset } })}
+    <div key={index} className={classes.join(' ')} style={styles} data-document={template}>
+      {renderChildren({ items: widgetDoc.container, props: p, context: { ...context, row } })}
     </div>
   );
 };

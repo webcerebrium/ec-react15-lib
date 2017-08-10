@@ -19,8 +19,9 @@ export const onApplicationReady = (ecOptions, dispatch) => {
   } else {
     __w.addEventListener('resize', () => {
       // when the window is resized, editor could be removed
-      __p.postMessage({ message: 'EDITOR_MOUSE_OVER_ID', data: { id: '', rect: null, rowset: '' } }, '*');
-      __p.postMessage({ message: 'EDITOR_SELECT_FROM_ID', data: { id: '', rect: null, rowset: '' } }, '*');
+      const data = { id: '', rect: null, rowset: '', document: '' };
+      __p.postMessage({ message: 'EDITOR_MOUSE_OVER_ID', data }, '*');
+      __p.postMessage({ message: 'EDITOR_SELECT_FROM_ID', data }, '*');
     });
   }
   __w.addEventListener('message', (e) => {
@@ -28,13 +29,13 @@ export const onApplicationReady = (ecOptions, dispatch) => {
       'message=', e.data, 'location=', __w.location.href, '__p=', __p);
     if (e.data.message === 'EDITOR_MOUSE_OVER_XY') {
       const result = findNodeFromXY(e.data.x, e.data.y, e.data.scale);
-      const data = { id: result.id, rect: result.rect, rowset: result.rowset };
+      const data = { id: result.id, rect: result.rect, rowset: result.rowset, document: result.document };
       Logger.of('DocumentDispatcher.EDITOR_MOUSE_OVER_XY').info('x=', e.data.x, 'y=', e.data.y, 'data=', data);
       const msg = { message: 'EDITOR_MOUSE_OVER_ID', data };
       __p.postMessage(msg, '*');
     } else if (e.data.message === 'EDITOR_SELECT_FROM_XY') {
       const result = findNodeFromXY(e.data.x, e.data.y, e.data.scale);
-      const data = { id: result.id, rect: result.rect, rowset: result.rowset };
+      const data = { id: result.id, rect: result.rect, rowset: result.rowset, document: result.document };
       Logger.of('DocumentDispatcher.EDITOR_SELECT_FROM_XY').info('x=', e.data.x, 'y=', e.data.y, 'data=', data);
       const msg = { message: 'EDITOR_SELECT_FROM_ID', data };
       __p.postMessage(msg, '*');

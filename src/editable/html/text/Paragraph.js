@@ -1,9 +1,9 @@
 import React from 'react';
 import { Logger, getValue, getStyling } from './../../../services';
 
-export const Paragraph = ({ section, index, props, context, pos }) => {
+export const Paragraph = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.List').info('section', section, 'index', index, 'props', props, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['value'], optional: [], styling: ['Block', 'Text', 'Visibility']
   });

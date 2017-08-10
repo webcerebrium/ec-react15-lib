@@ -3,9 +3,9 @@ import { PasswordInput } from './../../../components';
 // import { triggerAction } from './../../../services/DocumentAction';
 import { Logger, setValue, getWritableValue, getStyling } from './../../../services';
 
-export const InputPassword = ({ section, index, props, context, pos }) => {
+export const InputPassword = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.InputPassword').info('section', section, 'index', index, 'props', props, 'pos=', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const optional = ['value', 'placeholder', 'width', 'maxLength', 'name'];
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['target'], optional, styling: ['Block', 'Text', 'Visibility']

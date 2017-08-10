@@ -18,9 +18,9 @@ class InputFileUpload extends Component {
   }
 
   render() {
-    const { section, index, props, context, pos } = this.props;
+    const { section, index, props, context, pos, childIndex } = this.props;
     Logger.of('render.InputFileUpload').info('section', section, 'index', index, 'props', props, 'pos=', pos);
-    const sp = { props, context, pos };
+    const sp = { props, context, pos, childIndex };
     const optional = ['value', 'onUpload'];
     const { styles, classes } = getStyling({
       ...sp, mandatory: ['target', 'options'], optional, styling: ['Block', 'Visibility']

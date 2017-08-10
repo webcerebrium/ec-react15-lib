@@ -3,9 +3,9 @@ import { Logger, getValue, getStyling } from './../../../services';
 
 /*eslint-disable jsx-a11y/iframe-has-title*/
 
-export const Iframe = ({ section, index, props, context, pos }) => {
+export const Iframe = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Iframe').info('section', section, 'index', index, 'props', props, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp,
     mandatory: ['src'],

@@ -2,9 +2,9 @@ import React from 'react';
 import { triggerAction } from './../../../services/DocumentAction';
 import { Logger, getValue, renderChildren, getStyling } from './../../../services';
 
-export const Button = ({ section, index, props, context, pos }) => {
+export const Button = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Button').info('section', section, 'index', index, 'props', props, 'pos', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const optional = ['disabled', 'value', 'container', 'icon', 'iconSide'];
   const { styles, classes } = getStyling({
     ...sp, optional, mandatory: ['actions'], styling: ['Block', 'Text', 'Visibility']

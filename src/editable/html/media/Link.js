@@ -2,9 +2,9 @@ import React from 'react';
 import { Logger, getValue, renderChildren, getStyling } from './../../../services';
 import { triggerAction } from './../../../services/DocumentAction';
 
-export const Link = ({ section, index, props, context, pos }) => {
+export const Link = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Link').info('section', section, 'index', index, 'props', props, 'pos=', pos);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp,
     styling: ['Inline', 'Text', 'Visibility'],

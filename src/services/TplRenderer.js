@@ -12,7 +12,7 @@ export const renderElementDebug = ({ key, section, element }) => (
   </div>
 );
 
-export const renderElement = (section, key, element, context, parent, pos) => {
+export const renderElement = (section, key, element, context, parent, pos, childIndex) => {
   const type = element.type;
   if (!type) {
     Logger.of('TplRenderer.renderElement').warn('element type not defined', element);
@@ -26,7 +26,7 @@ export const renderElement = (section, key, element, context, parent, pos) => {
   }
   if (typeof elementsList[element.type] === 'function') {
     // There could be some properties added.
-    const params = { section, key, index: key, props: element, context, parent, pos };
+    const params = { section, key, index: key, props: element, context, parent, pos, childIndex };
     Logger.of('TplRenderer.renderElement').info(element.type, element);
     return React.createElement(elementsList[element.type], params);
   }
@@ -34,11 +34,16 @@ export const renderElement = (section, key, element, context, parent, pos) => {
   return renderElementDebug({ key, section, element });
 };
 
-const renderElementsContainer = (section, elements, context, parent, pos) => {
+const renderElementsContainer = (docId, section, elements, context, parent, pos) => {
   if (!elements) return false;
-  return elements.map((item, index) => {
-    return renderElement(section, index, item, context, parent, pos);
-  });
+  if (!docId) {
+    return elements.map((item, index) => (renderElement(section, index, item, context, parent, pos)));
+  }
+  return (
+    <div key={section} data-document={docId}>
+      {elements.map((item, index) => (renderElement(section, index, item, context, parent, pos)))}
+    </div>
+  );
 };
 
 /* This method returns HTMLCollection */
@@ -60,19 +65,17 @@ export const renderChildren = (params) => {
       return false;
     }
     const repeatedItems = [];
-    const rowsetPrefix = context.rowset ? `${context.rowset} ` : '';
     p.repeatable.forEach((row, dataIndex) => {
-      // shouldn't row be evaluated? now. it shouldn't. we already have evaluation in repeated.
-      const rowset = `${rowsetPrefix}${props._id}__${dataIndex}`;
-      const rContext = { ...context, row: { ...context.row, ...row }, rowset };
+      // shouldn't row be evaluated? no. it shouldn't. we already have evaluation in repeated.
+      const rContext = { ...context, row: { ...context.row, ...row } };
       items.forEach((item, ri) => {
         const rIndex = ri + (dataIndex * items.length);
-        repeatedItems.push(renderElement('container', rIndex, item, rContext, p, pos));
+        repeatedItems.push(renderElement('container', rIndex, item, rContext, p, pos, dataIndex));
       });
     });
     return (repeatedItems);
   }
-  return renderElementsContainer('container', items, context, props, pos);
+  return renderElementsContainer('', 'container', items, context, props, pos);
 };
 
 export const renderDocument = (template, layout, context) => {
@@ -81,14 +84,18 @@ export const renderDocument = (template, layout, context) => {
     Logger.of('TplRenderer.renderDocument').warn('invalid layout, should not contain container parameter', layout);
     return false;
   }
-  return (
-    <div className='document wrapper'>
-      {layout && layout.sticky ? renderElementsContainer('sticky', layout.sticky, context, parent) : ''}
-      {layout && layout.header ? renderElementsContainer('header', layout.header, context, parent) : ''}
-      {template && template.container ? renderElementsContainer('document', template.container, context, parent) : ''}
-      {layout && layout.footer ? renderElementsContainer('footer', layout.footer, context, parent) : ''}
-    </div>
-  );
+  const out = [];
+  if (layout) {
+    if (layout.sticky) out.push(renderElementsContainer(layout._id, 'sticky', layout.sticky, context, parent));
+    if (layout.header) out.push(renderElementsContainer(layout._id, 'header', layout.header, context, parent));
+  }
+  if (template && template.container) {
+    out.push(renderElementsContainer(template._id, 'document', template.container, context, parent));
+  }
+  if (layout && layout.footer) {
+    out.push(renderElementsContainer(layout._id, 'footer', layout.footer, context, parent));
+  }
+  return out;
 };
 
 export default {

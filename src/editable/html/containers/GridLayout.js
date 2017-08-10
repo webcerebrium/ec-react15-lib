@@ -2,10 +2,11 @@ import React from 'react';
 import { Logger, getStyling, renderChildren } from './../../../services';
 import './GridLayout.css';
 
-export const GridLayout = ({ section, index, props, context, pos }) => {
+export const GridLayout = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.GridLayout').info('section', section, 'index', index, 'props', props, 'pos', pos);
+  const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
-    props, context, pos, mandatory: ['container'], optional: ['repeatable'], styling: ['Block', 'Visibility']
+    ...sp, mandatory: ['container'], optional: ['repeatable'], styling: ['Block', 'Visibility']
   });
   if (styles === false) return false;
   //

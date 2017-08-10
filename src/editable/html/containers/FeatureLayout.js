@@ -2,9 +2,9 @@ import React from 'react';
 import { Logger } from './../../../services/Logger';
 import { renderChildren, getStyling } from './../../../services';
 
-export const FeatureLayout = ({ section, index, props, context, pos }) => {
+export const FeatureLayout = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.FeatureLayout').info('section', section, 'index', index, 'props', props);
-  const sp = { props, context, pos };
+  const sp = { props, context, pos, childIndex };
   const optional = ['orientation', 'repeatable', 'alignSelf'];
   const alignSelf = props.alignSelf || 'center';
   const { styles, classes } = getStyling({

@@ -125,6 +125,12 @@ export const getRowset = (elem) => {
   return getRowset(elem.parent);
 };
 
+export const getTemplateDocumentName = (elem) => {
+  if (!elem) return '';
+  if (elem.getAttribute('data-document')) return elem.getAttribute('data-document');
+  return getTemplateDocumentName(elem.parentNode);
+};
+
 export const findNodeFromXY = (nX, nY, scale = 1.0) => {
   let element = null; let rectangle = null; let rowset = '';
   const elements = document.querySelectorAll('#DocumentRoot *'); // eslint-disable-line no-undef
@@ -144,9 +150,9 @@ export const findNodeFromXY = (nX, nY, scale = 1.0) => {
   // console.log('findNodeFromXY x=', nX, 'y=', nY, 'element=', element);
   //if (element && (element.getAttribute('id') === 'DocumentRoot' || element.tagName === 'BODY')) return [];
   //const id = (element && element.getAttribute('id')) ? element.getAttribute('id') : '';
-
+  const doc = getTemplateDocumentName(element);
   // NOTE: element below is useless for editor, can be eliminated
-  return { element, id: getElementId(element), rect: rectangle, rowset };
+  return { element, id: getElementId(element), rect: rectangle, rowset, document: doc };
 };
 
 export const setValueById = (root, id, newObj) => {
