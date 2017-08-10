@@ -1,7 +1,7 @@
 import React from 'react';
 import { Logger } from './../../../services/Logger';
 import { deepSet } from './../../../services/DocumentObject';
-import { getReadableValue, renderChildren, getStyling } from './../../../services';
+import { getReadableValue, renderChildren, getStyling, getValue } from './../../../services';
 
 export const Widget = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.html.Widget').info('section', section, 'index', index, 'props', props, 'pos', pos);
@@ -16,7 +16,7 @@ export const Widget = ({ section, index, props, context, pos, childIndex }) => {
     Logger.of('render.html.Widget').error('Widget instance is context.docs - check reducers', props, context);
     return false;
   }
-  const widgetDoc = context.docs[props.document];
+  const widgetDoc = context.docs[getValue(props, 'document', context)];
   if (!widgetDoc) {
     Logger.of('render.html.Widget').error('Widget instance is missing document in context', props, context);
     return false;
