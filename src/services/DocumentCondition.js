@@ -2,6 +2,7 @@ import { Logger } from './Logger';
 import { triggerAction } from './DocumentAction';
 import * as conditionsBundle from './conditions';
 
+// TODO: props should be removed from the first parameter, not used
 export const matchConditions = (props, conditions, context) => {
   if (!conditions) return false;
   return conditions.every((condition) => {
