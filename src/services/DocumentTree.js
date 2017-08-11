@@ -110,19 +110,27 @@ const getOffset = (el) => {
 };
 
 export const getRectangleOf = (element, scale = 1.0) => {
-  const offset = getOffset(getDocumentRoot());
   return {
-    top: scale * (getOffset(element).top - parseInt(offset.top, 10)), // eslint-disable-line no-undef
-    left: scale * (getOffset(element).left - parseInt(offset.left, 10)), // eslint-disable-line no-undef
+    top: scale * (getOffset(element).top), // eslint-disable-line no-undef
+    left: scale * (getOffset(element).left), // eslint-disable-line no-undef
     width: element.offsetWidth * scale, // eslint-disable-line no-undef
     height: element.offsetHeight * scale // eslint-disable-line no-undef
   };
 };
 
-export const getRowset = (elem) => {
-  if (!elem) return '';
-  if (elem.getAttribute('rel')) return elem.getAttribute('rel');
-  return getRowset(elem.parent);
+export const getDocumentPath = (elem) => {
+  if (!elem) return false;
+  if (elem.tagName === 'BODY' || elem.getAttribute('id') === 'DocumentRoot') return false;
+  const pathOfParent = getDocumentPath(elem.parentNode);
+  const path = [];
+  const classList = elem.classList; // extract only classes started from .id- and from .index-
+  classList.forEach((cl) => {
+    const itemPath = {};
+    if (cl.length > 6 && cl.substring(0, 6) === 'index-') { itemPath.index = parseInt(cl.substring(6), 10); }
+    if (cl.length > 3 && cl.substring(0, 3) === 'id-') { itemPath.id = cl.substring(3); }
+    if (Object.keys(itemPath).length) path.push(itemPath);
+  });
+  return pathOfParent !== false ? [].concat(pathOfParent, path) : path;
 };
 
 export const getTemplateDocumentName = (elem) => {
@@ -132,7 +140,9 @@ export const getTemplateDocumentName = (elem) => {
 };
 
 export const findNodeFromXY = (nX, nY, scale = 1.0) => {
-  let element = null; let rectangle = null; let rowset = '';
+  let element = null;
+  let rectangle = null;
+  let path = [];
   const elements = document.querySelectorAll('#DocumentRoot *'); // eslint-disable-line no-undef
   elements.forEach((elem) => { // eslint-disable-line func-names
     if (!getElementId(elem)) return;
@@ -140,9 +150,7 @@ export const findNodeFromXY = (nX, nY, scale = 1.0) => {
     if (nX >= rect.left && nX <= (rect.left + rect.width) && nY >= rect.top && nY <= (rect.top + rect.height)) {
       element = elem;
       rectangle = rect;
-      // TRICKY: to find rowset - probably it should take a while to go
-      // upper and upper until we meet the element with rel
-      rowset = getRowset(elem);
+      path = getDocumentPath(elem);
     }
   });
   while (element && !getElementId(element)) element = element.parentNode;
@@ -152,7 +160,7 @@ export const findNodeFromXY = (nX, nY, scale = 1.0) => {
   //const id = (element && element.getAttribute('id')) ? element.getAttribute('id') : '';
   const doc = getTemplateDocumentName(element);
   // NOTE: element below is useless for editor, can be eliminated
-  return { element, id: getElementId(element), rect: rectangle, rowset, document: doc };
+  return { element, id: getElementId(element), rect: rectangle, path, document: doc };
 };
 
 export const setValueById = (root, id, newObj) => {

@@ -12,7 +12,7 @@ export const Debug = ({ section, index, props, context, pos, childIndex }) => {
     Logger.of('render.Debug').warn('section=', section, 'index=', index, 'props=', props, 'context=', context);
   }
   return (
-    <div style={styles} className={classes.join(' ')} key={index} rel={tplProps.rowset}>
+    <div style={styles} className={classes.join(' ')} key={index}>
       <pre style={{ textAlign: 'left' }}>{JSON.stringify(tplProps, null, 2)}</pre>
     </div>
   );

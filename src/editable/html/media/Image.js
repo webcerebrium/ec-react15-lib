@@ -17,7 +17,6 @@ export const Image = ({ section, index, props, context, pos, childIndex }) => {
   if (!src) return false;
   return (
     <img
-      rel={props.rowset}
       style={styles}
       className={classes.join(' ')}
       src={src}
