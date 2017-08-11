@@ -3,7 +3,7 @@ import { Logger, getValue, renderChildren, getStyling } from './../../../service
 import { triggerAction } from './../../../services/DocumentAction';
 
 export const Link = ({ section, index, props, context, pos, childIndex }) => {
-  Logger.of('render.html.Link').info('section', section, 'index', index, 'props', props, 'pos=', pos);
+  Logger.of('render.html.Link').info('section', section, 'index', index, 'props', props, 'context=', context);
   const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
     ...sp,
@@ -24,13 +24,16 @@ export const Link = ({ section, index, props, context, pos, childIndex }) => {
   const value = getValue(props, 'value', context);
   const leftIcon = iconSide !== 'right' && props.icon ? <i className={`fa fa-${props.icon}`} /> : false;
   const rightIcon = iconSide === 'right' && props.icon ? <i className={`fa fa-${props.icon}`} /> : false;
+  const target = getValue(props, 'target', context);
+  const hasHash = target === 'inherit' && context.globals.websiteType === 'webapp-config';
+  const href = (hasHash ? '#' : '') + getValue(props, 'href', context);
   return (
     <a
       key={index}
-      href={getValue(props, 'href', context)}
+      href={href}
       className={classes.join(' ')}
       style={styles}
-      target={getValue(props, 'target', context)}
+      target={target !== 'inherit' ? target : undefined}
       onClick={props.actions && onClick}
     >
       {leftIcon}

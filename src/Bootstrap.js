@@ -54,6 +54,7 @@ const envApplication = (ecOptions, elem) => {
     const docWebsiteConfig = found.doc;
     // save website properties
     store.dispatch({ type: 'SET_DATA', payload: ['website', docWebsiteConfig.website] });
+    store.dispatch({ type: 'SET_DATA', payload: ['websiteType', docWebsiteConfig.type] });
     // continue with mounting application
     if (docWebsiteConfig.routes && docWebsiteConfig.routes.length) {
       Logger.of('ec-react15.App').info('Routes', docWebsiteConfig.routes, 'Properties', docWebsiteConfig.website);
