@@ -51,9 +51,6 @@ export const routeFromPreloaded = (pathname, routesByPath, store, callback) => {
   const cb = () => {
     const context = getDocumentContext(store.getState(), store.dispatch);
     let route = {};
-    Logger.of('TplRoute.routeFromPreloaded').info('routesByPath=', routesByPath,
-      'context=', JSON.stringify(context.docs.post));
-    Logger.of('TplRoute.routeFromPreloaded').warn('post.type=', context.docs.post.type);
     // go through every route in the list and check if condition match
     routesByPath.forEach((r) => {
       const match = (r.conditions) ? matchConditions({}, r.conditions, context) : true;
