@@ -157,7 +157,7 @@ export const preloadRouteData = ({ pathname, routes, store, callback }) => {
       enqueueDataStream(queue, route.preloadedQueries, getDocumentContext(store.getState()), 'SAVE_DATA_QUERY');
     });
   }
-  Logger.of('TplRouteData.preloadDocuments').warn('queue.length=', queue.length);
+  Logger.of('TplRouteData.preloadDocuments').info('queue.length=', queue.length);
   downloadAllSyncData(ecOptions, dispatch, queue, callback);
 };
 

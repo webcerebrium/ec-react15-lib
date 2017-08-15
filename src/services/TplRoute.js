@@ -47,6 +47,7 @@ export const routesMatchPath = (path, routes) => {
 };
 
 export const routeFromPreloaded = (pathname, routesByPath, store, callback) => {
+  // we know what to do when we have just a single route
   if (routesByPath.length === 1) { callback(routesByPath[0]); return; }
   const cb = () => {
     const context = getDocumentContext(store.getState(), store.dispatch);
@@ -61,5 +62,13 @@ export const routeFromPreloaded = (pathname, routesByPath, store, callback) => {
     });
     callback(route);
   };
-  preloadRouteData({ pathname, routes: routesByPath, store, callback: cb });
+
+  // but if we have multiple routes. we are trying to
+  const routesNoOverride = routesByPath.filter(r => (typeof r.override === 'undefined' || r.override !== false));
+  // if we found single route excluding routes that do not need preload
+  const routes = (routesNoOverride.length === 1) ? routesNoOverride : routesByPath;
+  Logger.of('TplRoute.routeFromPreloaded.routes').info('routes=', routes);
+  if (routes.length === 1) { callback(routes[0]); return; }
+
+  preloadRouteData({ pathname, routes, store, callback: cb });
 };
