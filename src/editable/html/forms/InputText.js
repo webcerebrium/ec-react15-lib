@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextArea, TextInput } from './../../../components';
 import { triggerAction } from './../../../services/DocumentAction';
+import Debounced from './../../../services/Debounced';
 import { Logger, setValue, getWritableValue, getStyling } from './../../../services';
 
 export const InputText = ({ section, index, props, context, pos, childIndex }) => {
@@ -13,12 +14,17 @@ export const InputText = ({ section, index, props, context, pos, childIndex }) =
   if (styles === false) return false;
   //
   const value = getWritableValue(props.target, context, '');
+  const nDebouncedInterval = props.debounce || 250;
   const onChangeValue = (val) => {
-    setValue(props.target, val, context);
-    if (props.onChange) {
-      triggerAction(props.onChange, context);
-    }
-    if (typeof context.onTriggerComplete === 'function') { context.onTriggerComplete(); }
+    Debounced.start(`update-${props.target}`, () => {
+      setValue(props.target, val, context);
+      if (props.onChange) {
+        triggerAction(props.onChange, context);
+      }
+      if (typeof context.onTriggerComplete === 'function') {
+        context.onTriggerComplete();
+      }
+    }, nDebouncedInterval);
   };
   if (props.rows > 1) {
     return (
