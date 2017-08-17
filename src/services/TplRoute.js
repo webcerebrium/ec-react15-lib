@@ -12,6 +12,8 @@ const replaceAll = (str, find, replace) => {
   return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 };
 
+const hasNoPreload = r => (!r.preloadedDocuments && !r.preloadedQueries && !r.preloadedData);
+
 export const routesMatchPath = (path, routes) => {
   const res = [];
   for (let i = 0; i < routes.length; i += 1) {
@@ -34,7 +36,7 @@ export const routesMatchPath = (path, routes) => {
     }
     if (match) { Logger.of('TplRoute.routesMatchPath').info('routePath=', routePath, 'match=', match); }
     if (match) {
-      if (!hasMask) {
+      if (!hasMask || hasNoPreload(route)) {
         res.length = 0;
         res.push(route); break;
       } else {
@@ -48,7 +50,9 @@ export const routesMatchPath = (path, routes) => {
 
 export const routeFromPreloaded = (pathname, routesByPath, store, callback) => {
   // we know what to do when we have just a single route
-  if (routesByPath.length === 1) { callback(routesByPath[0]); return; }
+  if (routesByPath.length === 1 && hasNoPreload(routesByPath[0])) {
+    callback(routesByPath[0]); return;
+  }
   const cb = () => {
     const context = getDocumentContext(store.getState(), store.dispatch);
     let route = {};
@@ -63,11 +67,10 @@ export const routeFromPreloaded = (pathname, routesByPath, store, callback) => {
     callback(route);
   };
 
-  // but if we have multiple routes. we are trying to
-  const routesFirstMatch = routesByPath.filter(r => (!r.preloadedDocuments || !r.preloadedQueries || !r.preloadedData));
+  // but if we have multiple routes with multiple options, figured out after preloading
+  const routesNoPreload = routesByPath.filter(r => (hasNoPreload(r)));
+  if (routesNoPreload.length === 1) { callback(routesNoPreload[0]); return; }
   // if we found single route excluding routes that do not need preload
-  const routes = (routesFirstMatch.length === 1) ? routesFirstMatch : routesByPath;
-  Logger.of('TplRoute.routeFromPreloaded.routes').info('routes=', routes);
-  if (routes.length === 1) { callback(routes[0]); return; }
+  Logger.of('TplRoute.routeFromPreloaded.routes').info('routesByPath=', routesByPath);
   preloadRouteData({ pathname, routes: routesByPath, store, callback: cb });
 };
