@@ -23,6 +23,7 @@ import * as _inputpassword from './forms/InputPassword';
 import * as _inputcheck from './forms/InputCheck';
 import * as _inputdropdown from './forms/InputDropdown';
 import * as _inputfile from './forms/InputFileUpload';
+import * as _inputimage from './forms/InputImageUpload';
 
 export default {
   ..._container.default,
@@ -49,5 +50,6 @@ export default {
   ..._inputpassword.default,
   ..._inputcheck.default,
   ..._inputdropdown.default,
-  ..._inputfile.default
+  ..._inputfile.default,
+  ..._inputimage.default
 };
