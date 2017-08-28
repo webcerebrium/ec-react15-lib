@@ -17,13 +17,14 @@ export const Button = ({ section, index, props, context, pos, childIndex }) => {
     triggerAction(props, context);
   };
   const disabled = getValue(props, 'disabled', context); // disabled could be conditional, from styles...
+  const isDisabled = typeof styles.disabled !== 'undefined' ? styles.disabled : disabled;
   const iconSide = props.iconSide || 'left';
   const leftIcon = iconSide !== 'right' && props.icon ?
   (<span>&nbsp; <i className={`fa fa-${props.icon}`} /></span>) : false;
   const rightIcon = iconSide === 'right' && props.icon ?
   (<span>&nbsp; <i className={`fa fa-${props.icon}`} /></span>) : false;
   return (
-    <button disabled={disabled} key={index} className={classes.join(' ')} style={styles} onClick={onClick}>
+    <button disabled={isDisabled} key={index} className={classes.join(' ')} style={styles} onClick={onClick}>
       {getValue(props, 'value', context)}
       {leftIcon}
       {!props.container ? false : renderChildren({ items: props.container, props, context })}

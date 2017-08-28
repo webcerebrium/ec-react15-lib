@@ -109,10 +109,11 @@ export const triggerAction = (props, context) => {
   if (actions.dispatch) {
     triggerDispatch(props, actions.dispatch, context);
   }
+  if (actions.go) {
+    triggerNavigation(props, actions.go, context);
+  }
   if (actions.send) {
     return triggerSend(props, actions.send, context).then(results => results, err => err);
-  } else if (actions.go) {
-    triggerNavigation(props, actions.go, context);
   }
   if (props.tracking) trackEvent(props.tracking);
   if (context && typeof context.onTriggerComplete === 'function') { context.onTriggerComplete(); }
