@@ -1,0 +1,57 @@
+.block-slider {
+    margin-top: 15px;
+    position: relative;
+    height: 8px;
+}
+
+.block-slider__cont {
+    position: relative;
+    height: 100%;
+}
+
+.block-slider__touch {
+    width: 8px;
+    height: 20px;
+    background-color: #fff;
+    border: 1px solid #9B9B9D;
+    position: absolute;
+    top: -6px;
+    cursor: pointer;
+    box-shadow: 0px 1px 5px #9B9B9D;
+}
+
+.slider-huge .block-slider__line {
+    background: -webkit-linear-gradient(left, #F00 0%, #FF0 16.66%, #0F0 33.33%, #0FF 50%,
+    #00F 66.66%, #F0F 83.33%, #F00 100%);
+}
+
+.block-slider__line {
+    height: 100%;
+}
+
+.pickingArea {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: -webkit-linear-gradient(top, hsl(0, 0%, 100%) 0%, hsla(0, 0%, 100%, 0) 50%, hsla(0, 0%, 0%, 0) 50%, hsl(0, 0%, 0%) 100%), -webkit-linear-gradient(left, hsl(0, 0%, 50%) 0%, hsla(0, 0%, 50%, 0) 100%);
+}
+
+.pickingArea .picker {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #FFF;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+}
+
+.pickingArea .picker:before {
+    width: 8px;
+    height: 8px;
+    content: "";
+    position: absolute;
+    border: 1px solid #999;
+    border-radius: 50%;
+    cursor: pointer;
+}
