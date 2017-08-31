@@ -4,6 +4,7 @@ import TextInput from './TextInput';
 import PasswordInput from './PasswordInput';
 import TextArea from './TextArea';
 import Checkbox from './Checkbox';
+import ModalWindow from './ModalWindow';
 
 const styleInfoBox = {
   margin: '0px auto',
@@ -67,5 +68,6 @@ export {
   Checkbox,
   TextArea,
   TextInput,
-  PasswordInput
+  PasswordInput,
+  ModalWindow
 };
