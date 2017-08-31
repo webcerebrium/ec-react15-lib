@@ -118,6 +118,12 @@ export const getRectangleOf = (element, scale = 1.0) => {
   };
 };
 
+export const getTemplateDocumentName = (elem) => {
+  if (!elem) return '';
+  if (elem.getAttribute('data-document')) return elem.getAttribute('data-document');
+  return getTemplateDocumentName(elem.parentNode);
+};
+
 export const getDocumentPath = (elem) => {
   if (!elem) return false;
   if (elem.tagName === 'BODY' || elem.getAttribute('id') === 'DocumentRoot') return false;
@@ -131,12 +137,6 @@ export const getDocumentPath = (elem) => {
     if (Object.keys(itemPath).length) path.push(itemPath);
   });
   return pathOfParent !== false ? [].concat(pathOfParent, path) : path;
-};
-
-export const getTemplateDocumentName = (elem) => {
-  if (!elem) return '';
-  if (elem.getAttribute('data-document')) return elem.getAttribute('data-document');
-  return getTemplateDocumentName(elem.parentNode);
 };
 
 export const getNodeById = (elemId) => {
