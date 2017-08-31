@@ -139,6 +139,22 @@ export const getTemplateDocumentName = (elem) => {
   return getTemplateDocumentName(elem.parentNode);
 };
 
+export const getNodeById = (elemId) => {
+  if (!elemId) return false;
+  let element = null;
+  const elements = document.querySelectorAll('#DocumentRoot *'); // eslint-disable-line no-undef
+  elements.forEach((elem) => { // eslint-disable-line func-names
+    const getElemId = getElementId(elem);
+    if (!getElemId) return;
+    if (getElemId === elemId) {
+      element = elem;
+    }
+  });
+  if (!element) return {};
+  const doc = getTemplateDocumentName(element);
+  return { element, id: elemId, rect: getRectangleOf(element), path: getDocumentPath(element), document: doc };
+};
+
 export const findNodeFromXY = (nX, nY, scale = 1.0) => {
   let element = null;
   let rectangle = null;
@@ -202,6 +218,7 @@ export default {
   findNodeFromXY,
   findParent,
   getElementLists,
-  searchElements
+  searchElements,
+  getNodeById
 };
 

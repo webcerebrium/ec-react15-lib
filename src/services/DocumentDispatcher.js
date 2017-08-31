@@ -1,5 +1,5 @@
 import { Logger } from './Logger';
-import { findNodeFromXY } from './DocumentTree';
+import { findNodeFromXY, getNodeById } from './DocumentTree';
 
 const __w = window; // eslint-disable-line no-undef
 const __p = __w.parent; // eslint-disable-line no-undef
@@ -39,6 +39,15 @@ export const onApplicationReady = (ecOptions, dispatch) => {
       Logger.of('DocumentDispatcher.EDITOR_SELECT_FROM_XY').info('x=', e.data.x, 'y=', e.data.y, 'data=', data);
       const msg = { message: 'EDITOR_SELECT_FROM_ID', data };
       __p.postMessage(msg, '*');
+    } else if (e.data.message === 'EDITOR_SELECT_FROM_PATH') {
+      if (e.data.selectedId) {
+        const result = getNodeById(e.data.selectedId);
+        const data = { id: result.id, rect: result.rect, path: result.path, document: result.document };
+        const msg = { message: 'EDITOR_SELECT_FROM_ID', data };
+        __p.postMessage(msg, '*');
+      } else {
+        Logger.of('DocumentDispatcher.EDITOR_SELECT_FROM_PATH').warn('ID of selected element is not found');
+      }
     } else if (e.data && e.data.message) {
       // this is some iframe-message, most likely from slave to parent
       dispatch({ type: e.data.message, payload: e.data });
