@@ -6,7 +6,7 @@ import { Logger, setValue, getWritableValue, getStyling } from './../../../servi
 export const InputPassword = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.InputPassword').info('section', section, 'index', index, 'props', props, 'pos=', pos);
   const sp = { props, context, pos, childIndex };
-  const optional = ['value', 'placeholder', 'width', 'maxLength', 'name', 'onChange'];
+  const optional = ['value', 'placeholder', 'width', 'maxLength', 'name', 'onChange', 'tracking'];
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['target'], optional, styling: ['Block', 'Text', 'Visibility']
   });

@@ -6,7 +6,7 @@ import { Logger, setValue, getValue, getWritableValue, getStyling } from './../.
 export const InputDropdown = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.InputDropdown').info('section', section, 'index', index, 'props', props, 'pos=', pos);
   const sp = { props, context, pos, childIndex };
-  const optional = ['value', 'width', 'onChange'];
+  const optional = ['value', 'width', 'onChange', 'tracking'];
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['target', 'options'], optional, styling: ['Block', 'Text', 'Visibility']
   });

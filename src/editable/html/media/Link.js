@@ -9,7 +9,7 @@ export const Link = ({ section, index, props, context, pos, childIndex }) => {
     ...sp,
     styling: ['Inline', 'Text', 'Visibility'],
     mandatory: ['href'],
-    optional: ['actions', 'target', 'icon', 'iconSide', 'container', 'value', 'textAlign']
+    optional: ['actions', 'target', 'icon', 'iconSide', 'container', 'value', 'textAlign', 'tracking']
   });
   if (styles === false) return false;
   if (props.textAlign) styles.textAlign = props.textAlign; // weird..

@@ -205,7 +205,7 @@ class InputImageUpload extends Component {
     const { section, index, props, context, pos, childIndex } = this.props;
     Logger.of('render.InputImageUpload').info('section', section, 'index', index, 'props', props, 'pos=', pos);
     const sp = { props, context, pos, childIndex };
-    const optional = [];
+    const optional = ['tracking'];
     const { styles, classes } = getStyling({
       ...sp,
       mandatory: ['target', 'onUpload'],

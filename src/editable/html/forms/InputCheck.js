@@ -7,7 +7,7 @@ export const InputCheck = ({ section, index, props, context, pos, childIndex }) 
   Logger.of('render.InputCheck').info('section', section, 'index', index, 'pos', pos);
   const sp = { props, context, pos, childIndex };
   const { styles, classes } = getStyling({
-    ...sp, mandatory: ['target'], optional: ['value', 'onChange'], styling: ['Block', 'Text', 'Visibility']
+    ...sp, mandatory: ['target'], optional: ['value', 'onChange', 'tracking'], styling: ['Block', 'Text', 'Visibility']
   });
   if (styles === false) return false;
 

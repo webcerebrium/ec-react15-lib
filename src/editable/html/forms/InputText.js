@@ -7,7 +7,7 @@ import { Logger, setValue, getWritableValue, getStyling } from './../../../servi
 export const InputText = ({ section, index, props, context, pos, childIndex }) => {
   Logger.of('render.InputText').info('section', section, 'index', index, 'props', props, 'pos=', pos);
   const sp = { props, context, pos, childIndex };
-  const optional = ['value', 'placeholder', 'width', 'rows', 'maxLength', 'name', 'onChange'];
+  const optional = ['value', 'placeholder', 'width', 'rows', 'maxLength', 'name', 'onChange', 'tracking'];
   const { styles, classes } = getStyling({
     ...sp, mandatory: ['target'], optional, styling: ['Block', 'Text', 'Visibility']
   });
