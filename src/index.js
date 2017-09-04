@@ -12,7 +12,7 @@ import { getValue, getEvaluated, getWritableValue, getCompositeValue, setValue }
 import { getDocumentContext } from './services/TplContext';
 import { triggerNavigation, triggerSet, triggerDispatch, triggerAction } from './services/DocumentAction';
 import { matchConditions, conditionalSet, getFromCondition } from './services/DocumentCondition';
-import { findById } from './services/DocumentTree';
+import { findById, searchElements } from './services/DocumentTree';
 import { getStyling, getStylingProperties, checkProperties } from './services/TplStyling';
 import { renderElement, renderChildren, renderDocument } from './services/TplRenderer';
 import { routesMatchPath, routePathValues } from './services/TplRoute';
@@ -62,7 +62,9 @@ export default {
   getStyling,
   getStylingProperties,
   checkProperties,
+  // work with document tree
   findById,
+  searchElements,
   // renderers itself
   renderElement,
   renderDocument,
