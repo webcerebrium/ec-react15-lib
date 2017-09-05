@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import tinycolor from 'tinycolor2';
+import styled from 'styled-components';
 import './colorpicker.css';
 import Debounced from '../../services/Debounced';
 import { Colors as colors } from './colors.config';
@@ -7,6 +8,13 @@ import TextInput from '../TextInput';
 import ColorSlider from './ColorSlider';
 import Color2dPicker from './Color2dPicker';
 import ModalPanel from '../ModalPanel';
+
+const Button = styled.button` 
+  &:focus, &:active, &:focus:active, &.active:focus {
+    outline: none;
+  }
+`;
+
 
 const ColorsPanel = ({ value, onSelectColor }) => {
   const currentColor = tinycolor(value);
@@ -162,14 +170,14 @@ class ColorPicker extends Component {
     const lastColors = this.state.lastColors;
     return (
       <div>
-        <button
+        <Button
           className='btn btn-default'
-          ref={(buttonReason) => { this.buttonAction = buttonReason; }}
+          innerRef={(buttonReason) => { this.buttonAction = buttonReason; }}
           onClick={() =>
             this.setState({ isOpen: !this.state.isOpen })}
         >
           <i className='fa fa-paint-brush' />
-        </button>
+        </Button>
         {
           this.state.isOpen &&
           <ModalPanel
