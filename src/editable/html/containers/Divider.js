@@ -11,9 +11,10 @@ export const Divider = ({ section, index, props, context, pos, childIndex }) => 
   styles.width = '100%';
   const innerStyle = {
     margin: '0px auto',
-    width: typeof props.width !== 'undefined' ? props.width : '100%',
-    height: typeof props.height !== 'undefined' ? props.height : 2,
-    background: props.color ? props.color : '#888'
+    width: props.width ? props.width : '100%',
+    height: props.height ? props.height : 2,
+    background: props.borderColor ? props.borderColor : '#888',
+    float: props.textAlign ? props.textAlign : 'none'
   };
   return (
     <div key={index} className={classes.join(' ')} style={styles}>
