@@ -219,6 +219,7 @@ export default {
   findParent,
   getElementLists,
   searchElements,
-  getNodeById
+  getNodeById,
+  getParentsElement
 };
 
