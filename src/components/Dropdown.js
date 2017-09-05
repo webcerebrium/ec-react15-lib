@@ -26,7 +26,10 @@ class Dropdown extends Component {
         className='form-control'
         style={this.props.style}
       >
-        {this.props.options.map(item => (<option key={item.value} value={item.value} >{item.label}</option>))}
+        {this.props.options.map((item, index) => {
+          const kIndex = index;
+          return <option key={kIndex} value={item.value}>{item.label}</option>;
+        })}
       </select>
     );
   }

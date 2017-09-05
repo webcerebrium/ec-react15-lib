@@ -48,6 +48,15 @@ export const onApplicationReady = (ecOptions, dispatch) => {
       } else {
         Logger.of('DocumentDispatcher.EDITOR_SELECT_FROM_PATH').warn('ID of selected element is not found');
       }
+    } else if (e.data.message === 'EDITOR_UPDATE_DATA') {
+      if (e.data.params) {
+        const id = e.data.params._id;
+        const result = getNodeById(id);
+        const msg = { message: 'EDITOR_SELECT_FROM_ID', result };
+        __p.postMessage(msg, '*');
+      } else {
+        Logger.of('DocumentDispatcher.EDITOR_SELECT_FROM_PATH').warn('ID of selected element is not found');
+      }
     } else if (e.data && e.data.message) {
       // this is some iframe-message, most likely from slave to parent
       dispatch({ type: e.data.message, payload: e.data });

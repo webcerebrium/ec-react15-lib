@@ -1,6 +1,6 @@
 import { Logger } from './Logger';
 import { setValue, getValue, getEvaluated, getReadableValue, getWritableValue } from './DocumentData';
-import { findById, searchElements } from './DocumentTree';
+import { findById, searchElements, setValueById } from './DocumentTree';
 import { renderChildren, renderElement } from './TplRenderer';
 import { getStyling, getStylingProperties } from './TplStyling';
 
@@ -30,5 +30,6 @@ export default {
   renderChildren,
   renderElement,
   findById,
-  searchElements
+  searchElements,
+  setValueById
 };
