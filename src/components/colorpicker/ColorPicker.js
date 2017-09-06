@@ -176,7 +176,7 @@ class ColorPicker extends Component {
           onClick={() =>
             this.setState({ isOpen: !this.state.isOpen })}
         >
-          <i className='fa fa-paint-brush' />
+          <i className='fa fa-paint-brush' /> { this.props.name && this.props.name}
         </Button>
         {
           this.state.isOpen &&
