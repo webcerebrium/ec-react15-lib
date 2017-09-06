@@ -184,7 +184,10 @@ export const setValueById = (root, id, newObj) => {
     if (elem && id && elem._id === id) {
       Object.keys(newObj).forEach((key) => {
         /* eslint-disable no-param-reassign */
-        if (key !== '_id' && key !== 'type') { elem[key] = newObj[key]; }
+        if (key !== '_id' && key !== 'type') {
+          if (typeof elem[`@${key}`] !== 'undefined') delete elem[`@${key}`];
+          elem[key] = newObj[key];
+        }
         /* eslint-enable no-param-reassign */
       });
     }
