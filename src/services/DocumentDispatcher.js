@@ -1,3 +1,4 @@
+import { push } from 'react-router-redux';
 import { Logger } from './Logger';
 import { findNodeFromXY, getNodeById } from './DocumentTree';
 
@@ -55,6 +56,13 @@ export const onApplicationReady = (ecOptions, dispatch) => {
         dispatch({ type: 'SAVE_DATA_DOCUMENT', payload: [dIndex, objDocument] });
       } else {
         Logger.of('DocumentDispatcher.EDITOR_UPDATE_DATA').warn('dIndex =', dIndex, 'objDocument =', objDocument);
+      }
+    } else if (e.data.message === 'EDITOR_CHANGE_ROUTE') {
+      const path = e.data.path;
+      if (path) {
+        dispatch(push(path));
+      } else {
+        Logger.of('DocumentDispatcher.EDITOR_CHANGE_ROUTE').warn('path =', path);
       }
     } else if (e.data && e.data.message) {
       // this is some iframe-message, most likely from slave to parent
