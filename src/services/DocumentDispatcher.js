@@ -1,11 +1,12 @@
 import { push } from 'react-router-redux';
 import { Logger } from './Logger';
 import { findNodeFromXY, getNodeById } from './DocumentTree';
+import { triggerAction } from './DocumentAction';
 
 const __w = window; // eslint-disable-line no-undef
 const __p = __w.parent; // eslint-disable-line no-undef
 
-export const onApplicationReady = (ecOptions, dispatch) => {
+export const onApplicationReady = (ecOptions, dispatch, context) => {
   if (!ecOptions.disableMessaging) {
     // Send the message 'NodeReady' to the parent window, notifying editor about successfull mount
     if (__p) {
@@ -63,6 +64,14 @@ export const onApplicationReady = (ecOptions, dispatch) => {
         dispatch(push(path));
       } else {
         Logger.of('DocumentDispatcher.EDITOR_CHANGE_ROUTE').warn('path =', path);
+      }
+    } else if (e.data.message === 'EDITOR_CALL_REMOTE_ACTION') {
+      const actions = e.data.actions;
+      const ctx = e.data.actions.row ? { row: e.data.actions.row } : {};
+      if (actions) {
+        triggerAction(actions, { ...context, ...ctx, onNavigate: url => dispatch(push(url)) });
+      } else {
+        Logger.of('DocumentDispatcher.EDITOR_CALL_REMOTE_ACTION').warn('actions =', actions);
       }
     } else if (e.data && e.data.message) {
       // this is some iframe-message, most likely from slave to parent

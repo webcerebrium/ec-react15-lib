@@ -39,7 +39,9 @@ const envApplication = (ecOptions, elem) => {
       // we don't have a config, and we are launching from what we are provided in the
       const mount = [{ selector: ecOptions.mount, template: ecOptions.template }];
       Logger.of('ec-react15.App').warn('mounting', mount);
-      onStartApplications(store, mount, () => { onApplicationReady(ecOptions, store.dispatch); });
+      onStartApplications(store, mount, () => {
+        onApplicationReady(ecOptions, store.dispatch);
+      });
       return;
     }
 
@@ -59,7 +61,7 @@ const envApplication = (ecOptions, elem) => {
     if (docWebsiteConfig.routes && docWebsiteConfig.routes.length) {
       Logger.of('ec-react15.App').info('Routes', docWebsiteConfig.routes, 'Properties', docWebsiteConfig.website);
       const history = syncHistory(docWebsiteConfig, store);
-      onApplicationReady(ecOptions, store.dispatch);
+      onApplicationReady(ecOptions, store.dispatch, store.getState());
       const application = (
         <Provider store={store}>
           <Router history={history} onUpdate={() => __w.scrollTo(0, 0)}>
@@ -77,7 +79,9 @@ const envApplication = (ecOptions, elem) => {
       render(application, elem);
     } else if (docWebsiteConfig.mount && docWebsiteConfig.mount.length) {
       Logger.of('ec-react15.App').info('Mount', docWebsiteConfig.mount);
-      onStartApplications(store, docWebsiteConfig.mount, () => { onApplicationReady(ecOptions, store.dispatch); });
+      onStartApplications(store, docWebsiteConfig.mount, () => {
+        onApplicationReady(ecOptions, store.dispatch);
+      });
     } else {
       Logger.of('ec-react15.App').info('WebsiteRoutes', docWebsiteConfig.routes,
         'Properties', docWebsiteConfig.website);
