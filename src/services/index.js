@@ -3,6 +3,7 @@ import { setValue, getValue, getEvaluated, getReadableValue, getWritableValue } 
 import { findById, searchElements, setValueById } from './DocumentTree';
 import { renderChildren, renderElement } from './TplRenderer';
 import { getStyling, getStylingProperties } from './TplStyling';
+import Debounced from './Debounced';
 
 export {
   Logger,
@@ -15,7 +16,8 @@ export {
   getStylingProperties,
   renderChildren,
   renderElement,
-  findById
+  findById,
+  Debounced
 };
 
 export default {
@@ -31,5 +33,6 @@ export default {
   renderElement,
   findById,
   searchElements,
-  setValueById
+  setValueById,
+  Debounced
 };
