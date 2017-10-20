@@ -182,15 +182,19 @@ export const findNodeFromXY = (nX, nY, scale = 1.0) => {
 export const setValueById = (root, id, newObj) => {
   forEveryNode(root, (elem) => {
     if (elem && id && elem._id === id) {
-      Object.keys(newObj).forEach((key) => {
-        /* eslint-disable no-param-reassign */
+      /* eslint-disable no-param-reassign */
+      Object.keys({ ...elem, ...newObj }).forEach((key) => {
         if (key !== '_id' && key !== 'type') {
           if (typeof elem[`@${key}`] !== 'undefined') delete elem[`@${key}`];
-          elem[key] = newObj[key];
+          if (elem[key] && typeof newObj[key] === 'undefined') {
+            delete elem[key];
+          } else {
+            elem[key] = newObj[key];
+          }
         }
-        /* eslint-enable no-param-reassign */
       });
     }
+    /* eslint-enable no-param-reassign */
   });
 };
 
