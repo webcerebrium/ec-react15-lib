@@ -1,9 +1,9 @@
-import fetch_ from 'isomorphic-fetch';
+// import fetch_ from 'isomorphic-fetch';
 import { Logger } from './Logger';
 /* eslint-disable no-undef, no-console */
 // HACK for 'Uncaught TypeError: Illegal invocation' error in Chrome
 // https://github.com/matthew-andrews/isomorphic-fetch/pull/20/files
-const fetch = fetch_.bind(undefined);
+// const fetch = fetch_.bind(undefined);
 const Promise = require('es6-promise').Promise;
 
 export const getErrorString = (data) => {

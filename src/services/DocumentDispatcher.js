@@ -3,10 +3,10 @@ import { Logger } from './Logger';
 import { findNodeFromXY, getNodeById } from './DocumentTree';
 import { triggerAction } from './DocumentAction';
 
-const __w = window; // eslint-disable-line no-undef
-const __p = __w.parent; // eslint-disable-line no-undef
-
 export const onApplicationReady = (ecOptions, dispatch, context) => {
+  const __w = window; // eslint-disable-line no-undef
+  const __p = __w.parent; // eslint-disable-line no-undef
+
   if (!ecOptions.disableMessaging) {
     // Send the message 'NodeReady' to the parent window, notifying editor about successfull mount
     if (__p) {
