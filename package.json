@@ -1,6 +1,6 @@
 {
   "name": "ec-react15-lib",
-  "version": "0.6",
+  "version": "0.6.0",
   "description": "Enormous Cloud Applications Rendering Framework, version for React 0.15",
   "scripts": {
     "start": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --content-base . --history-api-fallback",
@@ -44,16 +44,15 @@
     "eslint-plugin-react": "^7.1.0",
     "expect": "*",
     "extract-text-webpack-plugin": "*",
+    "iso-morphic-style-loader": "^1.0.0",
     "jest": "^20.0.0",
     "react-hot-loader": "*",
-    "style-loader": "*",
     "webpack": "*",
     "webpack-dev-server": "*",
     "webpack-livereload-plugin": "*"
   },
   "dependencies": {
     "es6-promise": "^3.2.1",
-    "isomorphic-fetch": "^2.2.1",
     "markdown-react-js": "^0.3.0",
     "prop-types": "^15.5.8",
     "react": "15.4.0",

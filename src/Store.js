@@ -5,7 +5,7 @@ import { responsiveStoreEnhancer, createResponsiveStateReducer } from 'redux-res
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import reducers from './reducers';
 
-const state = window.__initialState__ || {}; // eslint-disable-line
+// const state = {}; // eslint-disable-line window && window.__initialState__ ||
 
 const isFrontend = (websiteConfig) => {
   // website-config for public websites (browser-routing)

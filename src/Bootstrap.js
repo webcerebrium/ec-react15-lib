@@ -10,15 +10,14 @@ import { onStartApplications } from './services/TplEmbeddedLoader';
 import { onApplicationReady } from './services/DocumentDispatcher';
 import ApplicationContainer from './containers/ApplicationContainer';
 
-const __w = window; // eslint-disable-line no-undef
-const __d = document; // eslint-disable-line no-undef
-
 const fatalApplicationError = (elem, errorMessage) => {
   // eslint-disable-next-line
   elem.innerHTML = `<div style='text-align:center' class='alert alert-danger'>${errorMessage}</div>`;
 };
 
 const envApplication = (ecOptions, elem) => {
+  const __w = window; // eslint-disable-line no-undef
+
   DB(ecOptions).fetchPreload().then((data) => {
     Logger.of('ec-react15.App').info('Documents preloaded', data);
     const store = getStore(ecOptions);
@@ -92,19 +91,25 @@ const envApplication = (ecOptions, elem) => {
   });
 };
 
+
 export const bootstrap = (ecOptions = {}) => {
-  const selectorApp = ecOptions.app || 'root';
-  const selectorLoader = ecOptions.loader || 'loader';
-  const elemRootApplication = __d.getElementById(selectorApp);
-  if (elemRootApplication) {
-    const elemRootLoader = __d.getElementById(selectorLoader);
-    envApplication(ecOptions, elemRootApplication, () => {
-      elemRootApplication.style.display = 'block';
-      if (elemRootLoader) { elemRootLoader.style.display = 'none'; }
-    });
+  if (typeof window !== 'undefined') {
+    const __d = document; // eslint-disable-line no-undef
+    const selectorApp = ecOptions.app || 'root';
+    const selectorLoader = ecOptions.loader || 'loader';
+    const elemRootApplication = __d.getElementById(selectorApp);
+    if (elemRootApplication) {
+      const elemRootLoader = __d.getElementById(selectorLoader);
+      envApplication(ecOptions, elemRootApplication, () => {
+        elemRootApplication.style.display = 'block';
+        if (elemRootLoader) { elemRootLoader.style.display = 'none'; }
+      });
+    } else {
+      Logger.of('ec-react15.Bootstrap').info('No application mounting point, considering embedded applications');
+      envApplication(ecOptions, null);
+    }
   } else {
-    Logger.of('ec-react15.Bootstrap').info('No application mounting point, considering embedded applications');
-    envApplication(ecOptions, null);
+    // no browser environment
   }
 };
 
