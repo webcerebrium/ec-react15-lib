@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Checkbox = (props) => {
-  const isChecked = props.value === 'true';
+  const isChecked = String(props.value) === 'true';
   const onChange = () => {
     props.onChange(!isChecked);
   };
