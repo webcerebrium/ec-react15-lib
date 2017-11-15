@@ -23,7 +23,7 @@ class Dropdown extends Component {
         ref={(input) => { this.input = input; }}
         value={this.props.value}
         onChange={onChange}
-        className={`form-control ${this.props.className}`}
+        className={`form-control ${this.props.className ? this.props.className : ''}`}
         style={this.props.style}
       >
         {this.props.options.map((item, index) => {
