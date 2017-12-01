@@ -9,7 +9,7 @@ const Promise = require('es6-promise').Promise;
 export const getErrorString = (data) => {
   let res = '';
   if (data) {
-    const level1 = ['statusMessage', 'reason', 'errors', 'error'];
+    const level1 = ['statusMessage', 'errors', 'error', 'reason'];
     level1.forEach((field1) => {
       if (typeof data[field1] === 'string') {
         res = data[field1];

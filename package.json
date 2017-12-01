@@ -1,6 +1,6 @@
 {
   "name": "ec-react15-lib",
-  "version": "0.7.2",
+  "version": "0.7.6",
   "description": "Enormous Cloud Applications Rendering Framework, version for React 0.15",
   "scripts": {
     "start": "webpack-dev-server --debug --hot --devtool eval-source-map --output-pathinfo --watch --colors --inline --content-base . --history-api-fallback",

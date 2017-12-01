@@ -15,6 +15,7 @@ import * as _list from './text/List';
 import * as _debug from './Debug';
 import * as _image from './media/Image';
 import * as _link from './media/Link';
+import * as _video from './media/YouTubeVideo';
 import * as _loader from './forms/Loader';
 import * as _button from './forms/Button';
 import * as _messages from './forms/ErrorMessageBox';
@@ -43,6 +44,7 @@ export default {
   ..._paragraph.default,
   ..._image.default,
   ..._link.default,
+  ..._video.default,
   ..._loader.default,
   ..._button.default,
   ..._messages.default,
