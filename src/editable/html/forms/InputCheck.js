@@ -20,7 +20,7 @@ export const InputCheck = ({ section, index, props, context, pos, childIndex }) 
     if (typeof context.onTriggerComplete === 'function') { context.onTriggerComplete(); }
   };
   return (
-    <div key={index} style={styles} className={classes.join(' ')}>
+    <div key={index} style={styles} className={classes.join(' ')} >
       <Checkbox label={getValue(props, 'value', context)} value={value} onChange={onChangeValue} />
     </div>
   );

@@ -15,7 +15,7 @@ export const Image = ({ section, index, props, context, pos, childIndex }) => {
     Logger.of('render.html.Image').info('Image is missing src property, props=', props, 'context=', context);
     return false;
   }
-  if (!src) return false;
+
   const onError = (e) => {
     if (typeof srcAlt !== 'undefined') {
       e.target.src = srcAlt;
