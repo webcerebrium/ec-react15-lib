@@ -2,6 +2,7 @@ import { push } from 'react-router-redux';
 import { Logger } from './Logger';
 import { findNodeFromXY, getNodeById } from './DocumentTree';
 import { triggerAction } from './DocumentAction';
+import { getWritableValue } from './DocumentData';
 
 export const onApplicationReady = (ecOptions, dispatch, context) => {
   const __w = window; // eslint-disable-line no-undef
@@ -72,6 +73,21 @@ export const onApplicationReady = (ecOptions, dispatch, context) => {
         triggerAction(actions, { ...context, ...ctx, onNavigate: url => dispatch(push(url)) });
       } else {
         Logger.of('DocumentDispatcher.EDITOR_CALL_REMOTE_ACTION').warn('actions =', actions);
+      }
+    } else if (e.data.message === 'EDITOR_GET_FROM_REMOTE_CONTEXT') {
+      if (e.data.dataSource) {
+        const result = getWritableValue(e.data.dataSource, context, '');
+        if (typeof result !== 'object') {
+          const streamName = e.data.dataSource.substring(e.data.dataSource.indexOf(':') + 1);
+          const data = [streamName, result];
+          Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').info('data=', data);
+          const msg = { message: 'ARBITRARY_VALUE_CHANGE', data };
+          __p.postMessage(msg, '*');
+        } else {
+          Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').warn('Objects are not valid as a React child');
+        }
+      } else {
+        Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').warn('DataSource is not found');
       }
     } else if (e.data && e.data.message) {
       // this is some iframe-message, most likely from slave to parent
