@@ -3,8 +3,9 @@ import { Logger } from './Logger';
 import { findNodeFromXY, getNodeById } from './DocumentTree';
 import { triggerAction } from './DocumentAction';
 import { getWritableValue } from './DocumentData';
+import { getDocumentContext } from './TplContext';
 
-export const onApplicationReady = (ecOptions, dispatch, context) => {
+export const onApplicationReady = (ecOptions, dispatch, context, store) => {
   const __w = window; // eslint-disable-line no-undef
   const __p = __w.parent; // eslint-disable-line no-undef
 
@@ -68,24 +69,29 @@ export const onApplicationReady = (ecOptions, dispatch, context) => {
       }
     } else if (e.data.message === 'EDITOR_CALL_REMOTE_ACTION') {
       const actions = e.data.actions;
-      const ctx = e.data.actions.row ? { row: e.data.actions.row } : {};
+      let row;
+      if (e.data.actions.row) {
+        row = getWritableValue(e.data.actions.row, getDocumentContext(store.getState(), dispatch), '');
+      }
+      const ctx = row ? { row } : {};
       if (actions) {
-        triggerAction(actions, { ...context, ...ctx, onNavigate: url => dispatch(push(url)) });
+        triggerAction(actions, {
+          ...getDocumentContext(store.getState(), dispatch),
+          ...ctx,
+          onNavigate: url => dispatch(push(url)),
+          onDispatch: (type, payload) => dispatch({ type, payload })
+        });
       } else {
         Logger.of('DocumentDispatcher.EDITOR_CALL_REMOTE_ACTION').warn('actions =', actions);
       }
     } else if (e.data.message === 'EDITOR_GET_FROM_REMOTE_CONTEXT') {
       if (e.data.dataSource) {
-        const result = getWritableValue(e.data.dataSource, context, '');
-        if (typeof result !== 'object') {
-          const streamName = e.data.dataSource.substring(e.data.dataSource.indexOf(':') + 1);
-          const data = [streamName, result];
-          Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').info('data=', data);
-          const msg = { message: 'ARBITRARY_VALUE_CHANGE', data };
-          __p.postMessage(msg, '*');
-        } else {
-          Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').warn('Objects are not valid as a React child');
-        }
+        const result = getWritableValue(e.data.dataSource, getDocumentContext(store.getState(), dispatch), '');
+        const streamName = e.data.dataSource.substring(e.data.dataSource.indexOf(':') + 1);
+        const data = [streamName, result];
+        Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').info('data=', data);
+        const msg = { message: 'ARBITRARY_VALUE_CHANGE', data };
+        __p.postMessage(msg, '*');
       } else {
         Logger.of('DocumentDispatcher.EDITOR_GET_FROM_REMOTE_CONTEXT').warn('DataSource is not found');
       }

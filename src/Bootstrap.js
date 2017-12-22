@@ -60,7 +60,7 @@ const envApplication = (ecOptions, elem) => {
     if (docWebsiteConfig.routes && docWebsiteConfig.routes.length) {
       Logger.of('ec-react15.App').info('Routes', docWebsiteConfig.routes, 'Properties', docWebsiteConfig.website);
       const history = syncHistory(docWebsiteConfig, store);
-      onApplicationReady(ecOptions, store.dispatch, store.getState());
+      onApplicationReady(ecOptions, store.dispatch, store.getState(), store);
       const application = (
         <Provider store={store}>
           <Router history={history} onUpdate={() => __w.scrollTo(0, 0)}>
