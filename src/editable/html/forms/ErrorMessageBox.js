@@ -13,8 +13,10 @@ export const ErrorMessageBox = ({ section, index, props, context, pos, childInde
   const value = getValue(props, 'value', context);
   if (!value) return false; //and it is valid branch..
   // take the title from one of the documents?
+  const alertType = getValue(props, 'alertType', context);
+  const alertClass = alertType ? `alert-${alertType}` : 'alert-warning';
   classes.push('alert');
-  classes.push('alert-warning'); // use alertType instead
+  classes.push(alertClass);
   return (
     <div key={index} className={classes.join(' ')} style={styles}>{value}</div>
   );
