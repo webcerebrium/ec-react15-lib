@@ -10,6 +10,7 @@ export const getStyle = props => ({
   borderColor: (typeof props.borderColor !== 'undefined' ? props.borderColor : undefined),
   borderRadius: (typeof props.borderRadius !== 'undefined' ? props.borderRadius : undefined),
   width: (props.width ? props.width : undefined),
+  zIndex: (props.zIndex ? props.zIndex : undefined),
   minWidth: (props.minWidth ? props.minWidth : undefined),
   maxWidth: (props.maxWidth ? props.maxWidth : undefined),
   height: (props.height ? props.height : undefined),
