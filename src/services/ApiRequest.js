@@ -6,10 +6,11 @@ import { Logger } from './Logger';
 // const fetch = fetch_.bind(undefined);
 const Promise = require('es6-promise').Promise;
 
-export const getErrorString = (data) => {
+export const getErrorString = (response) => {
   let res = '';
+  const data = response.body || response;
   if (data) {
-    const level1 = ['statusMessage', 'errors', 'error', 'reason'];
+    const level1 = ['statusText', 'statusMessage', 'errors', 'error', 'reason'];
     level1.forEach((field1) => {
       if (typeof data[field1] === 'string') {
         res = data[field1];
@@ -24,6 +25,7 @@ export const getErrorString = (data) => {
   }
   return res;
 };
+
 
 export const DB = (ecOptions) => {
   if (typeof ecOptions.baseUrl === 'undefined') {
@@ -49,21 +51,54 @@ export const DB = (ecOptions) => {
     return reqHeaders;
   };
 
+  const handleError = (error) => {
+    const err = error;
+    err.response = {
+      status: 0,
+      statusText:
+        'Cannot connect. Please make sure you are connected to internet.'
+    };
+    throw error;
+  };
+
+  const checkStatus = (response) => {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    }
+    if (response.status === 504) {
+      return Promise.reject({
+        status: response.status,
+        ok: false,
+        statusText: 'Server Timeout. Please contact administrator'
+      });
+    }
+    return response.json().then((json) => {
+      return Promise.reject({
+        status: response.status,
+        ok: false,
+        statusText: response.statusText,
+        body: json
+      });
+    });
+  };
+
+  const toJson = (response) => {
+    if (response.status === 204 || response.status === 205) {
+      return null;
+    }
+    return response.json();
+  };
+
   const fetchRequest = (req) => {
-    let statusMessage = '';
     return (
-      fetch(req).then((response) => {
-        // THIS MUST BE HANDLED. EVEN IS WE ARE GETTING INVALID STATUS, WE SHOULD TAKE
-        const status = response.status && response.status;
-        if (status !== 200 && status !== 201) {
-          statusMessage = { errors: { message: `${status} ${response.statusText}` } };
-        }
-        return response.json();
-      }, (err) => {
-        return ({ errors: err, statusMessage });
-      }).catch((err) => {
-        return ({ errors: err, statusMessage });
-      })
+      fetch(req)
+        .catch(handleError) // handle network issues
+        .then(checkStatus)
+        .then(toJson)
+        .catch((err) => {
+          const error = getErrorString(err);
+          return ({ errors: error, statusMessage: '' });
+        })
     );
   };
 
