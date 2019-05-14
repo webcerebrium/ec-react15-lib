@@ -65,13 +65,6 @@ export const DB = (ecOptions) => {
     if (response.status >= 200 && response.status < 300) {
       return response;
     }
-    if (response.status === 504) {
-      return Promise.reject({
-        status: response.status,
-        ok: false,
-        statusText: 'Server Timeout. Please contact administrator'
-      });
-    }
     return response.json().then((json) => {
       return Promise.reject({
         status: response.status,
@@ -80,6 +73,39 @@ export const DB = (ecOptions) => {
         body: json
       });
     });
+  };
+
+  const isJson = (response) => {
+    return response.clone().text()
+      .then((text) => {
+        try {
+          const data = JSON.parse(text);
+          if (data && typeof data === 'object') {
+            return response;
+          }
+          return Promise.reject();
+        } catch (err) {
+          return Promise.reject({
+            ok: false,
+            statusText: 'Unexpected type response'
+          });
+        }
+      });
+  };
+
+  const checkJson = (response) => {
+    return response.clone().json()
+      .then((data) => {
+        const error = getErrorString(data);
+        if (error) {
+          return Promise.reject({
+            status: response.status,
+            ok: false,
+            statusText: error
+          });
+        }
+        return response;
+      });
   };
 
   const toJson = (response) => {
@@ -93,6 +119,8 @@ export const DB = (ecOptions) => {
     return (
       fetch(req)
         .catch(handleError) // handle network issues
+        .then(isJson)
+        .then(checkJson)
         .then(checkStatus)
         .then(toJson)
         .catch((err) => {
