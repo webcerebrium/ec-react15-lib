@@ -87,6 +87,7 @@ export const DB = (ecOptions) => {
         } catch (err) {
           return Promise.reject({
             ok: false,
+            status: response.status,
             statusText: 'Unexpected type response'
           });
         }
@@ -124,8 +125,9 @@ export const DB = (ecOptions) => {
         .then(checkStatus)
         .then(toJson)
         .catch((err) => {
+          const { status = '' } = err || {};
           const error = getErrorString(err);
-          return ({ errors: error, statusMessage: '' });
+          return ({ errors: error, statusMessage: '', status });
         })
     );
   };
